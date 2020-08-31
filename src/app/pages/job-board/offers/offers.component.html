@@ -1,0 +1,106 @@
+<h1 align="center">Bolsa de Empleo - Ofertas</h1>
+<div class="p-col-12">
+
+    <p-panel header="OFERTAS" [toggleable]="true">
+        <div class="p-grid" align="center">
+            <div class="p-col">
+                <h3>Empresas Registradas</h3>
+
+                <i class="pi pi-briefcase" style="font-size: 3em">
+                    {{totalCompanies}}</i>
+            </div>
+            <div class="p-col">
+                <h3>Profesionales Vinculados</h3>
+
+                <i class="pi pi-users" style="font-size: 3em">
+                    {{totalProffesionals}}</i>
+            </div>
+            <div class="p-col">
+                <h3>Ofertas laborales</h3>
+
+                <i class="pi pi-user" style="font-size: 3em">
+                    {{totalOffers}}
+                </i>
+            </div>
+        </div>
+        <br>
+        <p align="center">
+            Las instituciones públicas y/o privadas demandan profesionales con excelencia académica, valores
+            humanísticos, morales y éticos, basados en una formación de calidad y calidez acordes al Plan Nacional del
+            Buen Vivir.
+        </p>
+    </p-panel>
+
+</div>
+<div class="p-col-12">
+
+
+
+    <br>
+    <div class="card card-w-title">
+        <div class="p-grid">
+            <div class="p-col-3">
+       
+                    <div class="ui-inputgroup" align="center">
+                        <input class="p-col-11" type="text" pInputText placeholder="Buscar">
+                        <button pButton type="button" icon="pi pi-search" class="ui-button-warn"></button>
+                    </div>
+ 
+                <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>
+
+            </div>
+            <div class="p-col-9">
+
+                <p-paginator></p-paginator>
+                <p-card>
+                    <div *ngFor="let offer of offers">
+                        <p-panel header="{{offer.position}}" [toggleable]="true">
+                            <div class="p-grid">
+                                <div class="p-col">
+                                    {{offer.activities}}     
+                                    <br><br>
+                                    <b>{{offer.start_date}} - {{offer.finish_date}}</b>              
+                                </div>
+                                <div class="p-col-3">
+                                    <button class="p-col-12" type="button" label="Mas información" pButton></button>
+                                </div>
+                            </div>
+
+                        </p-panel>
+                        <br>
+                    </div>
+                </p-card>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card card-title">
+        <div class="p-grid" align="center">
+            <div class="p-col">
+                <i class="pi pi-user" style="font-size: 3em">
+                   </i>
+                <h3>Empresas Registradas</h3>
+            </div>
+            <div class="p-col">
+                <i class="pi pi-users" style="font-size: 3em">
+               </i>
+                <h3>Profesionales Vinculados</h3>
+            </div>
+            <div class="p-col">
+                <i class="pi pi-briefcase" style="font-size: 3em">
+      
+                </i>
+                <h3>Ofertas laborales</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog [header]="headerDialogUser" [(visible)]="displayUser" modal="true" showEffect="fade">
+    <form >
+        <div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+            <input type="text" pInputText placeholder="Username">         
+        </div>
+
+    </form>
+</p-dialog>

@@ -53,6 +53,7 @@ import {BlockUIModule} from 'primeng/blockui';
 
 // Mis componentes
 import { AppProfessionalsComponent } from './professionals/app.professionals.component';
+import { OffersComponent } from './offers/offers.component';
 
 @NgModule({
     imports: [
@@ -105,7 +106,8 @@ import { AppProfessionalsComponent } from './professionals/app.professionals.com
         ProgressSpinnerModule
     ],
     declarations: [
-        AppProfessionalsComponent
+        AppProfessionalsComponent,
+        OffersComponent
     ],
     providers: [DialogService]
 })
