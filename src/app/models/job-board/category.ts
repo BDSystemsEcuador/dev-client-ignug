@@ -7,6 +7,7 @@ export class Category {
     name: string;
     type: string;
     icon: string;
-    state_id: State
+    state_id: State;
+    children: Category[];
 }
 
