@@ -37,70 +37,109 @@
 
 
     <br>
-    <div class="card card-w-title">
         <div class="p-grid">
             <div class="p-col-3">
-       
-                    <div class="ui-inputgroup" align="center">
-                        <input class="p-col-11" type="text" pInputText placeholder="Buscar">
-                        <button pButton type="button" icon="pi pi-search" class="ui-button-warn"></button>
-                    </div>
- 
-                <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>
-
+                <h3>Filtros</h3>
+                <p-tree [value]="files3" selectionMode="checkbox" [(selection)]="selectedFiles2"></p-tree>
             </div>
             <div class="p-col-9">
-
-                <p-paginator></p-paginator>
-                <p-card>
-                    <div *ngFor="let offer of offers">
-                        <p-panel header="{{offer.position}}" [toggleable]="true">
+                <p-dialog [header]="headerDialogUser" [(visible)]="displayUser" modal="true" showEffect="fade">
+                    <form >
+                        <div class="ui-inputgroup">
+                            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+                            <input type="text" pInputText placeholder="Username">         
+                        </div>
+                
+                    </form>
+                </p-dialog>
+                
+                <br>
+                <br>
+                <p-dataView #dv [value]="offers" [paginator]="true" [rows]="3" paginatorPosition="both" filterBy="brand"
+                    [sortField]="sortField" [sortOrder]="sortOrder">
+                    <p-header>
+                        <div class="ui-helper-clearfix">
                             <div class="p-grid">
-                                <div class="p-col">
-                                    {{offer.activities}}     
-                                    <br><br>
-                                    <b>{{offer.start_date}} - {{offer.finish_date}}</b>              
+                                <div class="p-col-12 p-md-4">
+                                    <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Filtrar por Categoria" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
                                 </div>
-                                <div class="p-col-3">
-                                    <button class="p-col-12" type="button" label="Mas información" pButton></button>
+                                <div class="p-col-6 p-md-4 filter-container">
+                                    <div style="position:relative">
+                                        <input type="search" pInputText placeholder="Buscar" (input)="dv.filter($event.target.value)">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </p-header>
+                    <ng-template let-offer pTemplate="listItem">
+                        <div  >
+                            <div class="offer-details">
+                                <div>
+                                    <div class="p-grid">
+                                        <div class="p-col-10"><b>{{offer.position}}</b></div>
+                                        <div class="p-col-10">{{offer.activities}}</div>
+                                        <div class="p-col-10">{{offer.start_date}} - {{offer.finish_date}}</div>
+                                    </div><br>
+                                    
+                                    <button pButton type="button" icon="pi pi-info" (click)="selectOffer($event, offer)"></button>
+
                                 </div>
                             </div>
+                        </div>
+                    </ng-template>
+                </p-dataView>
+                
+                <p-dialog header="Información" [(visible)]="displayDialog" [minY]="70" showEffect="fade" [modal]="true" 
+                    [style]="{width: '500px'}" (onAfterHide)="onDialogHide()" [contentStyle]="{padding: '2em', textAlign: 'left'}">
+                    <div *ngIf="selectedOffer">
+                        <p>id: {{selectedOffer.id}}</p>
+                     
+                        <p>company_id: {{selectedOffer.company_id}}</p>
+                    
+                        <p>code: {{selectedOffer.code}}</p>
+                     
+                        <p>contact: {{selectedOffer.contact}}</p>
+                    
+                        <p>email: {{selectedOffer.email}}</p>
+                    
+                        <p>phone: {{selectedOffer.phone}}</p>
+                   
+                        <p>cell_phone: {{selectedOffer.cell_phone}}</p>
+                     
+                        <p>contract_type: {{selectedOffer.contract_type}}</p>
+                   
+                        <p>position: {{selectedOffer.position}}</p>
+                    
+                        <p>training_hours: {{selectedOffer.training_hours}}</p>
+                    
+                        <p>experience_time: {{selectedOffer.experience_time}}</p>
+                  
+                        <p>remuneration: {{selectedOffer.remuneration}}</p>
+              
+                        <p>working_day: {{selectedOffer.working_day}}</p>
+                
+                        <p>number_jobs: {{selectedOffer.number_jobs}}</p>
+             
+                        <p>start_date: {{selectedOffer.start_date}}</p>
+              
+                        <p>finish_date: {{selectedOffer.finish_date}}</p>
+                  
+                        <p>activities: {{selectedOffer.activities}}</p>
+                   
+                        <p>aditional_information: {{selectedOffer.aditional_information}}</p>
+                        
+                        <p>location_id: {{selectedOffer.location_id}}</p>
 
-                        </p-panel>
-                        <br>
+                        <p>state_id: {{selectedOffer.state_id}}</p>
+
+                        <button type="button">Postular</button>
                     </div>
-                </p-card>
-            </div>
+                </p-dialog>
+
+  
         </div>
     </div>
     <br>
-    <div class="card card-title">
-        <div class="p-grid" align="center">
-            <div class="p-col">
-                <i class="pi pi-user" style="font-size: 3em">
-                   </i>
-                <h3>Empresas Registradas</h3>
-            </div>
-            <div class="p-col">
-                <i class="pi pi-users" style="font-size: 3em">
-               </i>
-                <h3>Profesionales Vinculados</h3>
-            </div>
-            <div class="p-col">
-                <i class="pi pi-briefcase" style="font-size: 3em">
-      
-                </i>
-                <h3>Ofertas laborales</h3>
-            </div>
-        </div>
-    </div>
-</div>
-<p-dialog [header]="headerDialogUser" [(visible)]="displayUser" modal="true" showEffect="fade">
-    <form >
-        <div class="ui-inputgroup">
-            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
-            <input type="text" pInputText placeholder="Username">         
-        </div>
 
-    </form>
-</p-dialog>
+</div>

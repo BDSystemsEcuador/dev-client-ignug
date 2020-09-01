@@ -24,7 +24,7 @@ export class AppMenuComponent implements OnInit {
                 // {label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/']},
                 // {label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard/coordinador']},
                 {label: 'Asistencia', icon: 'pi pi-fw pi-calendar', routerLink: ['/attendance/asistencia-laboral']},
-                /*
+             
                {
                    label: 'Components', icon: 'pi pi-fw pi-star', routerLink: ['/components'],
                    items: [
@@ -102,7 +102,7 @@ export class AppMenuComponent implements OnInit {
                {
                    label: 'Buy Now', icon: 'pi pi-fw pi-money-bill', url: ['https://www.primefaces.org/store']
                }
-                 */
+              
             ];
         }
         if (this.role.code === '2') {
