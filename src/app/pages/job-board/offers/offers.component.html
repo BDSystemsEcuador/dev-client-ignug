@@ -1,7 +1,19 @@
-<h1 align="center">Bolsa de Empleo - Ofertas</h1>
+<p-dialog [header]="headerDialogUser" [(visible)]="displayUser" modal="true" showEffect="fade">
+    <form >
+        <div class="ui-inputgroup">
+            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+            <input type="text" pInputText placeholder="Username">         
+        </div>
+
+    </form>
+</p-dialog>
+
+    <h1 align="center" style="color: #784fcf; font-size: 48px;">Bolsa de Empleo - Ofertas</h1>
+
 <div class="p-col-12">
 
-    <p-panel header="OFERTAS" [toggleable]="true">
+    <p-card>
+
         <div class="p-grid" align="center">
             <div class="p-col">
                 <h3>Empresas Registradas</h3>
@@ -23,14 +35,29 @@
                 </i>
             </div>
         </div>
+      </p-card>
         <br>
-        <p align="center">
-            Las instituciones públicas y/o privadas demandan profesionales con excelencia académica, valores
-            humanísticos, morales y éticos, basados en una formación de calidad y calidez acordes al Plan Nacional del
-            Buen Vivir.
-        </p>
-    </p-panel>
+        <p-card>
+        <div class="p-grid" align="center">
+            <div class="p-col-3">
+                <img src="../../../../assets/pages/CONTRATANDO.png" alt="" style="height: 300px;
+                width: 300px;">
+            </div>
+            <div class="p-col-2">
 
+            </div>
+            <div class="p-col-7">
+                <h1 style="color: #a689e6; font-size: 48px;">Ofertas Laborales</h1>
+                <p align="center" style="text-align: justify">
+                    Las instituciones públicas y/o privadas demandan profesionales con excelencia académica, valores
+                    humanísticos, morales y éticos, basados en una formación de calidad y calidez acordes al Plan Nacional del
+                    Buen Vivir.
+                </p>
+            </div>
+        </div>
+        
+
+        </p-card>
 </div>
 <div class="p-col-12">
 
@@ -43,15 +70,7 @@
                 <p-tree [value]="categories" selectionMode="checkbox" [(selection)]="selectedCategories"></p-tree>
             </div>
             <div class="p-col-9">
-                <p-dialog [header]="headerDialogUser" [(visible)]="displayUser" modal="true" showEffect="fade">
-                    <form >
-                        <div class="ui-inputgroup">
-                            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
-                            <input type="text" pInputText placeholder="Username">         
-                        </div>
                 
-                    </form>
-                </p-dialog>
                 
                 <br>
                 <br>
@@ -143,3 +162,17 @@
     <br>
 
 </div>
+
+    <div class="p-grid">
+        <div class="p-col-2"></div>
+        <p-card class="p-col-8">
+            <video class="p-col-12" controls>
+                <source src="../../../../assets/pages/empresas.mp4">
+              </video>
+        </p-card>
+    
+      <div class="p-col-2"></div>
+    </div>
+    
+<br>
+
