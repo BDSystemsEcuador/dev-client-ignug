@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { JobBoardService } from '../../../services/job-board/job-board.service';
 import { Offer, Category } from '../../../models/job-board/models.index';
-import {SelectItem} from 'primeng/api';
-import {TreeNode} from 'primeng/api';
+import { SelectItem } from 'primeng/api';
+import { TreeNode } from 'primeng/api';
 
 @Component({
   selector: 'app-offers',
@@ -19,21 +19,21 @@ export class OffersComponent implements OnInit {
   totalOffers: number;
 
 
-  
+
 
   displayDialog: boolean;
 
-    sortOptions: SelectItem[];
+  sortOptions: SelectItem[];
 
-    sortKey: string;
+  sortKey: string;
 
-    sortField: string;
+  sortField: string;
 
-    sortOrder: number;
+  sortOrder: number;
 
-    selectedCategories: TreeNode[];
-    categories: TreeNode [];
-  constructor(private jobBoardService: JobBoardService) { 
+  selectedCategories: TreeNode[];
+  categories: TreeNode[];
+  constructor(private jobBoardService: JobBoardService) {
 
   }
 
@@ -44,15 +44,15 @@ export class OffersComponent implements OnInit {
 
     this.getTotal();
     this.sortOptions = [
-      {label: 'Uno', value: '!uno'},
-      {label: 'Dos', value: 'dos'},
-      {label: 'Tres', value: 'tres'}
-  ];
+      { label: 'Uno', value: '!uno' },
+      { label: 'Dos', value: 'dos' },
+      { label: 'Tres', value: 'tres' }
+    ];
 
   }
   getOffers(): void {
 
-  this.jobBoardService.get('offers').subscribe(
+    this.jobBoardService.get('offers').subscribe(
       res => {
         this.offers = res['offers'];
         console.log(this.offers);
@@ -79,34 +79,57 @@ export class OffersComponent implements OnInit {
     this.selectedOffer = offer;
     this.displayDialog = true;
     event.preventDefault();
-}
-onSortChange(event) {
-  let value = event.value;
+  }
+  onSortChange(event) {
+    let value = event.value;
 
-  if (value.indexOf('!') === 0) {
+    if (value.indexOf('!') === 0) {
       this.sortOrder = -1;
       this.sortField = value.substring(1, value.length);
-  }
-  else {
+    }
+    else {
       this.sortOrder = 1;
       this.sortField = value;
+    }
   }
-}
-onDialogHide() {
-  this.selectedOffer = null;
-}
+  onDialogHide() {
+    this.selectedOffer = null;
+  }
 
-getCategories(): void {
+  getCategories(): void {
 
-  this.jobBoardService.get('categories/index').subscribe(
-    response => {
-        
-      const categories = response['data']['categories'];
-      this.categories = [];
-        categories.forEach(category => {
-          this.categories.push({'data':{'name':'categoryname','size':'size','type':'type11'},'children':category.children})
-        });
-        console.log(this.categories);
+    this.jobBoardService.get('categories/index').subscribe(
+      response => {
+        const categories = response['data']['categories'];
+        this.categories = [];
+        // categories.forEach(category => {
+        //   this.categories.push({'data':{'label': categories.name, 'data': categories.name}, 'children': category.children})
+        // });
+        // const testCategory = [
+        //   {
+        //     'name': 'TEST1',
+        //     'children': [
+        //       {
+        //         'name': 'SUBTEST1',
+        //         'children': []
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     'name': 'TEST2',
+        //     'children': [
+        //       {
+        //         'name': 'SUBTEST2',
+        //         'children': []
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     'name': 'TEST3',
+        //     'children': []
+        //   }
+        // ];
+        this.handleTree(categories);
       },
       error => {
         console.error(error);
@@ -114,5 +137,16 @@ getCategories(): void {
 
       }
     );
+  }
+
+  handleTree(response: any) {
+    response.forEach(category => {
+      const childObjects = [];
+      category.children.forEach(subCategory => {
+        childObjects.push({ 'label': subCategory.name })
+      });
+      this.categories.push({ 'label': category.name, 'children': childObjects })
+    });
+    console.log(this.categories);
   }
 }
