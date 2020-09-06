@@ -33,7 +33,18 @@ export class JobBoardService {
         url = environment.API_URL_JOB_BOARD + url;
         return this._http.post(url, data, {headers: this.headers});
     }
+/*   applyPostulant(data: any, api_token: string) {
+    const url = environment.apiUrl + 'postulants/apply';
+    this.headers = new HttpHeaders().set('Api-Token', api_token);
+    return this._http.post(url, JSON.stringify(data), {headers: this.headers});
+  } */
+  applyPostulant(data: any, id: string) {
+    const url = environment.API_URL_JOB_BOARD + 'postulants/apply';
+    this.headers = new HttpHeaders().set('Api-Token', id);
+    return this._http.post(url, JSON.stringify(data), {headers: this.headers});
+  }
 
+  
     update(url: string, data: any) {
         this.headers = new HttpHeaders()
             .set('X-Requested-With', 'XMLHttpRequest')

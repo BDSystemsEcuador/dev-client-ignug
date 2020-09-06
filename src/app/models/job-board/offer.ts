@@ -4,24 +4,24 @@ import { Company } from './company';
 
 export class Offer {
     id: number;
-    company_id: Company;
-    code: string;
-    contact: string;
-    email: string;
-    phone: string;
+    company_id: Company; //Compania
+    code: string;//ya
+    contact: string;//ya
+    email: string;//ya
+    phone: string;//ya
     cell_phone: string;
     contract_type: string;
-    position: string;
-    training_hours: string;
-    experience_time: string;
-    remuneration: string;
-    working_day: string;
-    number_jobs: string;
-    start_date: Date;
-    finish_date: Date;
-    activities: string;
-    aditional_information: string;
-    location_id: Location;
-    state_id: State
+    position: string;//ya
+    training_hours: string;//ya
+    experience_time: string;//ya
+    remuneration: string;//ya
+    working_day: string;//jornada
+    number_jobs: string;//ya
+    start_date: Date;//ya
+    finish_date: Date;//ya
+    activities: string;//ya
+    aditional_information: string;//ya
+    location_id: Location; // Provincia //ya
+    state_id: State // Pais //ya
 }
 

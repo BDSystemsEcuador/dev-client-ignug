@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { JobBoardService } from '../../../services/job-board/job-board.service';
-import { Offer, Category } from '../../../models/job-board/models.index';
+import { Offer } from '../../../models/job-board/models.index';
+import { User } from '../../../models/authentication/models.index';
 import { SelectItem } from 'primeng/api';
 import { TreeNode } from 'primeng/api';
-
+import {AccordionModule} from 'primeng/accordion';
+import {ButtonModule} from 'primeng/button';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 @Component({
   selector: 'app-offers',
   templateUrl: './offers.component.html',
   styleUrls: ['./offers.component.css']
 })
 export class OffersComponent implements OnInit {
+  userLogged: User;
   items: MenuItem[] = [];
   selectedOffer: Offer;
   offers: Offer[];
@@ -49,17 +53,22 @@ export class OffersComponent implements OnInit {
       { label: 'Tres', value: 'tres' }
     ];
 
+    if (sessionStorage.getItem('user_logged')) {
+      this.userLogged = JSON.parse(sessionStorage.getItem('user_logged')) as User;
+    } else {
+      this.userLogged = new User();
+    }
   }
   getOffers(): void {
 
     this.jobBoardService.get('offers').subscribe(
       res => {
         this.offers = res['offers'];
-        console.log(this.offers);
+
       },
       error => {
         console.error(error);
-        console.log(error);
+
 
       }
     );
@@ -133,7 +142,7 @@ export class OffersComponent implements OnInit {
       },
       error => {
         console.error(error);
-        console.log(error);
+
 
       }
     );
@@ -147,6 +156,29 @@ export class OffersComponent implements OnInit {
       });
       this.categories.push({ 'label': category.name, 'children': childObjects })
     });
-    console.log(this.categories);
+ 
+  }
+  
+  applyOffer(): void {
+    this.jobBoardService.applyPostulant( {'user': this.userLogged, 'offer': this.selectedOffer}, this.userLogged.first_name)
+      .subscribe(
+        response => {
+          console.log(response);
+          if (response) {
+           
+          }
+        },
+        error => {
+          console.log('ocurrio error al aplicar oferta');
+          console.log(error);
+          if (error.status === 401) {
+
+          }
+
+          if (error.status === 500) {
+            
+            
+          }
+        });
   }
 }
