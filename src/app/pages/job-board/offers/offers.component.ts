@@ -11,7 +11,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 @Component({
   selector: 'app-offers',
   templateUrl: './offers.component.html',
-  styleUrls: ['./offers.component.css']
+  styleUrls: ['./offers.component.scss']
 })
 export class OffersComponent implements OnInit {
   userLogged: User;
@@ -34,9 +34,10 @@ export class OffersComponent implements OnInit {
   sortField: string;
 
   sortOrder: number;
+  criterioBusqueda: string;
 
-  selectedCategories: TreeNode[];
-  categories: TreeNode[];
+  categories: TreeNode[] = [];
+  categorySelected: TreeNode | any;
   constructor(private jobBoardService: JobBoardService) {
 
   }
@@ -44,8 +45,7 @@ export class OffersComponent implements OnInit {
   ngOnInit(): void {
 
     this.getOffers();
-    this.getCategories();
-
+    this.getCatalogue();
     this.getTotal();
     this.sortOptions = [
       { label: 'Uno', value: '!uno' },
@@ -105,58 +105,49 @@ export class OffersComponent implements OnInit {
     this.selectedOffer = null;
   }
 
-  getCategories(): void {
-
-    this.jobBoardService.get('categories/index').subscribe(
+  getCatalogue(): void {
+    this.jobBoardService.get('categories').subscribe(
       response => {
-        const categories = response['data']['categories'];
-        this.categories = [];
-        // categories.forEach(category => {
-        //   this.categories.push({'data':{'label': categories.name, 'data': categories.name}, 'children': category.children})
-        // });
-        // const testCategory = [
-        //   {
-        //     'name': 'TEST1',
-        //     'children': [
-        //       {
-        //         'name': 'SUBTEST1',
-        //         'children': []
-        //       }
-        //     ]
-        //   },
-        //   {
-        //     'name': 'TEST2',
-        //     'children': [
-        //       {
-        //         'name': 'SUBTEST2',
-        //         'children': []
-        //       }
-        //     ]
-        //   },
-        //   {
-        //     'name': 'TEST3',
-        //     'children': []
-        //   }
-        // ];
-        this.handleTree(categories);
+        
+        response['data']['categories'].forEach(category => {
+          let categoryChildren = [];
+          category['children'].forEach(child => {
+            categoryChildren.push({label: child.name});
+          });
+          this.categories.push({label: category.name, children: categoryChildren});
+        });
+        
       },
-      error => {
-        console.error(error);
-
-
-      }
+      error => console.error(error)
     );
   }
 
-  handleTree(response: any) {
-    response.forEach(category => {
-      const childObjects = [];
-      category.children.forEach(subCategory => {
-        childObjects.push({ 'label': subCategory.name })
-      });
-      this.categories.push({ 'label': category.name, 'children': childObjects })
-    });
- 
+  insertCategory(category: any) {
+
+  }
+
+  filterOffers(): void {
+    const selectedChildren = [];
+    if (this.categorySelected) {
+      this.categorySelected.forEach(child => { selectedChildren.push('name', 'ilike', '%'+child.label+'%', 'or')});
+    }
+    const filter = { "filters":
+      {
+        "conditions":
+        [["position","ilike",`%${this.criterioBusqueda}%`]],
+        "conditionsCategoryFather":
+        [["name","ilike",`% %`]],
+        "conditionsCategoryChildren":
+        [selectedChildren],
+      }
+    };
+    this.jobBoardService.post(`offers/filter?limit=${20}&page=${1}&field=start_date&order=DESC`, filter)
+      .subscribe(
+        (res) => {
+          this.offers = res['offers']['data'];
+        },
+        err => console.log(err)
+      )
   }
   
   applyOffer(): void {

@@ -61,6 +61,15 @@
 
 
     </p-card>
+        <br>
+    <p-card *ngIf="categorySelected ; else elseBlock">
+        <div>Categorias Seleccionadas: <span *ngFor="let file of categorySelected"><br>-{{file.label}}</span></div>
+    </p-card>
+    <ng-template #elseBlock>
+        <p-card>
+            <div>Categorias Seleccionadas: <span><br>Todas</span></div>
+        </p-card>
+    </ng-template>
 </div>
 <div class="p-col-12">
 
@@ -68,29 +77,20 @@
 
     <br>
     <div class="p-grid">
-        <div class="p-col-3">
-            <h3>Filtros</h3>
-            <p-tree [value]="categories" selectionMode="checkbox" [(selection)]="selectedCategories"></p-tree>
-        </div>
-        <div class="p-col-9">
-
-
-            <br>
-            <br>
+        <div class="p-col-5">
+            <p-tree [value]="categories" [styleClass]="'my-tree'" selectionMode="checkbox" [(selection)]="categorySelected"></p-tree>
+        </div> 
+        <div class="p-col-7">
             <p-dataView #dv [value]="offers" [paginator]="true" [rows]="3" paginatorPosition="both" filterBy="brand"
                 [sortField]="sortField" [sortOrder]="sortOrder">
                 <p-header>
                     <div class="ui-helper-clearfix">
                         <div class="p-grid">
-                            <div class="p-col-12 p-md-4">
-                                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey"
-                                    placeholder="Filtrar por Categoria" (onChange)="onSortChange($event)"
-                                    [style]="{'min-width':'140px'}"></p-dropdown>
-                            </div>
+
                             <div class="p-col-6 p-md-4 filter-container">
-                                <div style="position:relative">
-                                    <input type="search" pInputText placeholder="Buscar"
-                                        (input)="dv.filter($event.target.value)">
+                                <div class="ui-inputgroup">
+                                    <input type="text" pInputText placeholder="Buscar Ofertas" [(ngModel)]="criterioBusqueda" width="100%">
+                                    <button pButton type="button" icon="pi pi-search" class="ui-button-warn" (click)="filterOffers()"></button>
                                 </div>
                             </div>
 
@@ -107,7 +107,7 @@
                                     <div class="p-col-10">{{offer.start_date}} - {{offer.finish_date}}</div>
                                 </div><br>
 
-                                <button pButton type="button" icon="pi pi-info"
+                                <button pButton type="button" icon="pi pi-info" label="Información"
                                     (click)="selectOffer($event, offer)"></button>
 
                             </div>
@@ -133,11 +133,11 @@
                             <div class="ui-fluid p-formgrid p-grid">
                                 <div class="p-field p-col">
                                     <label for="firstname2">Campo Amplio:</label>
-                                    <input id="firstname2" type="text" pInputText value="" readonly>
+                                    <input id="firstname2" type="text" pInputText value="{{selectedOffer.father_category.name}}" readonly>
                                 </div>
                                 <div class="p-field p-col">
                                     <label for="lastname2">Campo Específico:</label>
-                                    <input id="lastname2" type="text" pInputText value="" readonly>
+                                    <input id="lastname2" type="text" pInputText value="{{selectedOffer.children_category.name}}" readonly>
                                 </div>
 
                             </div>
@@ -213,7 +213,7 @@
                             <div class="ui-fluid p-formgrid p-grid">
                                 <div class="p-field p-col">
                                     <label for="firstname2">Provincia:</label>
-                                    <input id="firstname2" type="text" pInputText value="{{selectedOffer.location_id}}"
+                                    <input id="firstname2" type="text" pInputText value="{{selectedOffer.province.name}}"
                                         readonly>
                                 </div>
                                 <div class="p-field p-col">
@@ -226,7 +226,7 @@
                                 <div class="p-field p-col">
                                     <label for="firstname2">Cantón:
                                     </label>
-                                    <input id="firstname2" type="text" pInputText value="{{selectedOffer.state_id}}"
+                                    <input id="firstname2" type="text" pInputText value="{{selectedOffer.city.name}}"
                                         readonly>
                                 </div>
                                 <div class="p-field p-col">
@@ -272,7 +272,7 @@
                     <div class="p-grid">
                         <div class="p-col"></div>
                         <div class="p-col">
-                            <button pButton type="button" label="Postular" class="ui-button-success p-col-12" (click)="applyOffer()"> </button>
+                            <button pButton type="button"  icon="pi pi-check" label="Postular" class="ui-button-success p-col-12" (click)="applyOffer()"> </button>
                         </div>
                         <div class="p-col"></div>
                     </div>

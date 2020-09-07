@@ -1,6 +1,7 @@
 import { Location } from './location';
 import { State } from './../ignug/state';
 import { Company } from './company';
+import { Category } from './category';
 
 export class Offer {
     id: number;
@@ -21,7 +22,10 @@ export class Offer {
     finish_date: Date;//ya
     activities: string;//ya
     aditional_information: string;//ya
-    location_id: Location; // Provincia //ya
-    state_id: State // Pais //ya
+    city: Location; // Provincia esta ubicacion debe tener nombre verdad mij en location entonces deberia venir cantton y provincia 
+    state: State // activo, inactivo
+    father_category:Category;
+    children_category:Category;
+    province: Location;
 }
 
