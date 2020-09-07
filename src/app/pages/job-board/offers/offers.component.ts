@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { JobBoardService } from '../../../services/job-board/job-board.service';
 import { Offer } from '../../../models/job-board/models.index';
 import { User } from '../../../models/authentication/models.index';
@@ -22,9 +22,6 @@ export class OffersComponent implements OnInit {
   totalProffesionals: number;
   totalOffers: number;
 
-
-
-
   displayDialog: boolean;
 
   sortOptions: SelectItem[];
@@ -38,7 +35,7 @@ export class OffersComponent implements OnInit {
 
   categories: TreeNode[] = [];
   categorySelected: TreeNode | any;
-  constructor(private jobBoardService: JobBoardService) {
+  constructor(private jobBoardService: JobBoardService, private messageService: MessageService) {
 
   }
 
@@ -90,7 +87,7 @@ export class OffersComponent implements OnInit {
     event.preventDefault();
   }
   onSortChange(event) {
-    let value = event.value;
+    const value = event.value;
 
     if (value.indexOf('!') === 0) {
       this.sortOrder = -1;
@@ -108,15 +105,15 @@ export class OffersComponent implements OnInit {
   getCatalogue(): void {
     this.jobBoardService.get('categories').subscribe(
       response => {
-        
+
         response['data']['categories'].forEach(category => {
-          let categoryChildren = [];
+          const categoryChildren = [];
           category['children'].forEach(child => {
             categoryChildren.push({label: child.name});
           });
           this.categories.push({label: category.name, children: categoryChildren});
         });
-        
+
       },
       error => console.error(error)
     );
@@ -129,15 +126,15 @@ export class OffersComponent implements OnInit {
   filterOffers(): void {
     const selectedChildren = [];
     if (this.categorySelected) {
-      this.categorySelected.forEach(child => { selectedChildren.push('name', 'ilike', '%'+child.label+'%', 'or')});
+      this.categorySelected.forEach(child => { selectedChildren.push('name', 'ilike', '%' + child.label + '%', 'or'); });
     }
-    const filter = { "filters":
+    const filter = { 'filters':
       {
-        "conditions":
-        [["position","ilike",`%${this.criterioBusqueda}%`]],
-        "conditionsCategoryFather":
-        [["name","ilike",`% %`]],
-        "conditionsCategoryChildren":
+        'conditions':
+        [['position', 'ilike', `%${this.criterioBusqueda}%`]],
+        'conditionsCategoryFather':
+        [['name', 'ilike', `% %`]],
+        'conditionsCategoryChildren':
         [selectedChildren],
       }
     };
@@ -147,28 +144,32 @@ export class OffersComponent implements OnInit {
           this.offers = res['offers']['data'];
         },
         err => console.log(err)
-      )
+      );
   }
-  
+
   applyOffer(): void {
-    this.jobBoardService.applyPostulant( {'user': this.userLogged, 'offer': this.selectedOffer}, this.userLogged.first_name)
+    const userId = this.userLogged.id ?? 3;
+    this.jobBoardService.post( 'offers/opportunities/apply',
+        {'user': {'id': userId}, 'offer': {'id': this.selectedOffer.id}})
       .subscribe(
         response => {
           console.log(response);
-          if (response) {
-           
+          if (response === true) {
+            this.messageService.add({severity: 'success', summary: 'Postulado Exitoso.', detail: 'Su postulación fue enviada con éxito.'});
+          }
+          if (response === false) {
+            this.messageService.add({severity: 'warn', summary: 'Advertencia.', detail: 'Ya ha postulado a esta oferta.'});
           }
         },
         error => {
           console.log('ocurrio error al aplicar oferta');
           console.log(error);
           if (error.status === 401) {
-
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrió un problema!'});
           }
 
           if (error.status === 500) {
-            
-            
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Ocurrió un problema!'});
           }
         });
   }

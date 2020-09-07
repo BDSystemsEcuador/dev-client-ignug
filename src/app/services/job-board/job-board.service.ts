@@ -44,7 +44,6 @@ export class JobBoardService {
     return this._http.post(url, JSON.stringify(data), {headers: this.headers});
   }
 
-  
     update(url: string, data: any) {
         this.headers = new HttpHeaders()
             .set('X-Requested-With', 'XMLHttpRequest')

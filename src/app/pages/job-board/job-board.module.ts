@@ -39,7 +39,7 @@ import {PickListModule} from 'primeng/picklist';
 import {OrderListModule} from 'primeng/orderlist';
 import {CarouselModule} from 'primeng/carousel';
 import {FullCalendarModule} from 'primeng/fullcalendar';
-import {AccordionModule, DialogService, TabViewModule} from 'primeng';
+import {AccordionModule, DialogService, TabViewModule, MessageService} from 'primeng';
 import {DialogModule} from 'primeng/dialog';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {ToastModule} from 'primeng/toast';
@@ -109,7 +109,7 @@ import { OffersComponent } from './offers/offers.component';
         AppProfessionalsComponent,
         OffersComponent
     ],
-    providers: [DialogService]
+    providers: [DialogService, MessageService]
 })
 export class JobBoardModule {
 }
