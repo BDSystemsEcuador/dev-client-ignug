@@ -4,7 +4,7 @@ import { JobBoardService } from '../../../services/job-board/job-board.service';
 import { Offer } from '../../../models/job-board/models.index';
 import { User } from '../../../models/authentication/models.index';
 import { SelectItem } from 'primeng/api';
-import { TreeNode } from 'primeng/api';
+import {TreeNode} from 'primeng/api';
 import {AccordionModule} from 'primeng/accordion';
 import {ButtonModule} from 'primeng/button';
 import {InputTextareaModule} from 'primeng/inputtextarea';
@@ -57,6 +57,15 @@ export class OffersComponent implements OnInit {
       this.userLogged = new User();
     }
   }
+
+  nodeSelect(event) {
+    this.messageService.add({severity: 'info', summary: 'Node Selected', detail: event.node.label});
+}
+
+nodeUnselect(event) {
+    this.messageService.add({severity: 'info', summary: 'Node Unselected', detail: event.node.label});
+}
+
   getOffers(): void {
 
     this.jobBoardService.get('offers/all').subscribe(
