@@ -21,6 +21,7 @@ export class OffersComponent implements OnInit {
   totalCompanies: number;
   totalProffesionals: number;
   totalOffers: number;
+  validateOffer: boolean;
 
   displayDialog: boolean;
 
@@ -40,7 +41,7 @@ export class OffersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.validateOffer = false;
     this.getOffers();
     this.getCatalogue();
     this.getTotal();
@@ -84,6 +85,7 @@ export class OffersComponent implements OnInit {
   selectOffer(event: Event, offer: Offer) {
     this.selectedOffer = offer;
     this.displayDialog = true;
+    this.validateAppliedOffer();
     event.preventDefault();
   }
   onSortChange(event) {
@@ -119,6 +121,7 @@ export class OffersComponent implements OnInit {
     );
   }
 
+  
   insertCategory(category: any) {
 
   }
@@ -147,6 +150,17 @@ export class OffersComponent implements OnInit {
       );
   }
 
+  validateAppliedOffer() {
+    this.jobBoardService.validateAppliedOffer(this.userLogged.id ?? 3, this.selectedOffer.id)
+    .subscribe(response => {
+      if (response) {
+        this.validateOffer = true;
+      } else {
+        this.validateOffer = false;
+      }
+    });
+  }
+
   applyOffer(): void {
     const userId = this.userLogged.id ?? 3;
     this.jobBoardService.post( 'offers/opportunities/apply',
@@ -156,9 +170,11 @@ export class OffersComponent implements OnInit {
           console.log(response);
           if (response === true) {
             this.messageService.add({severity: 'success', summary: 'Postulado Exitoso.', detail: 'Su postulación fue enviada con éxito.'});
+            this.validateAppliedOffer()
           }
           if (response === false) {
             this.messageService.add({severity: 'warn', summary: 'Advertencia.', detail: 'Ya ha postulado a esta oferta.'});
+            this.validateAppliedOffer()
           }
         },
         error => {
