@@ -275,10 +275,10 @@
                         <div class="p-col"></div>
                         <div class="p-col">
                             <button pButton type="button" icon="pi pi-check" label="Aplicar a Oferta"
-                                class="ui-button-primary p-col-12" (click)="applyOffer()" *ngIf="!validateOffer">
+                                class="ui-button-success p-col-12" (click)="applyOffer()" *ngIf="!validateOffer">
                             </button>
                             <button pButton type="button" icon="pi pi-check" label="Oferta Aplicada"
-                                class="ui-button-success p-col-12" (click)="applyOffer()" *ngIf="validateOffer">
+                                class="ui-button-primary p-col-12" (click)="applyOffer()" *ngIf="validateOffer" disabled>
                             </button>
                         </div>
                         <div class="p-col"></div>
