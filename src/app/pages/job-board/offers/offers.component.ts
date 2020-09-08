@@ -58,7 +58,7 @@ export class OffersComponent implements OnInit {
   }
   getOffers(): void {
 
-    this.jobBoardService.get('offers').subscribe(
+    this.jobBoardService.get('offers/all').subscribe(
       res => {
         this.offers = res['offers'];
 
@@ -124,18 +124,23 @@ export class OffersComponent implements OnInit {
   }
 
   filterOffers(): void {
-    const selectedChildren = [];
+    let selectedChildren = [['name', 'ilike', `%%`]];
     if (this.categorySelected) {
-      this.categorySelected.forEach(child => { selectedChildren.push('name', 'ilike', '%' + child.label + '%', 'or'); });
+      selectedChildren = [];
+      this.categorySelected.forEach(child => { selectedChildren.push(['name', 'ilike', '%' + child.label + '%']); });
     }
     const filter = { 'filters':
       {
         'conditions':
         [['position', 'ilike', `%${this.criterioBusqueda}%`]],
         'conditionsCategoryFather':
-        [['name', 'ilike', `% %`]],
+        [selectedChildren],
         'conditionsCategoryChildren':
         [selectedChildren],
+        'conditionsCity':
+        [['name', 'ilike', `% %`]],
+        'conditionsProvince':
+        [['name', 'ilike', `% %`]],
       }
     };
     this.jobBoardService.post(`offers/filter?limit=${20}&page=${1}&field=start_date&order=DESC`, filter)
