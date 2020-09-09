@@ -120,9 +120,9 @@ nodeUnselect(event) {
         response['data']['categories'].forEach(category => {
           const categoryChildren = [];
           category['children'].forEach(child => {
-            categoryChildren.push({label: child.name});
+            categoryChildren.push({label: child.name, data: category.id});
           });
-          this.categories.push({label: category.name, children: categoryChildren});
+          this.categories.push({label: category.name, data: category.id, children: categoryChildren});
         });
 
       },
@@ -130,29 +130,26 @@ nodeUnselect(event) {
     );
   }
 
-  
-  insertCategory(category: any) {
-
-  }
-
   filterOffers(): void {
-    let selectedChildren = [['name', 'ilike', `%%`]];
+    let selectedChildren = 1;
     if (this.categorySelected) {
-      selectedChildren = [];
-      this.categorySelected.forEach(child => { selectedChildren.push(['name', 'ilike', '%' + child.label + '%']); });
+      selectedChildren = this.categorySelected.data;
     }
+    console.log(this.categorySelected);
+    console.log(selectedChildren);
+
     const filter = { 'filters':
       {
         'conditions':
         [['position', 'ilike', `%${this.criterioBusqueda}%`]],
         'conditionsCategoryFather':
-        [selectedChildren],
+        selectedChildren,
         'conditionsCategoryChildren':
-        [selectedChildren],
+        selectedChildren,
         'conditionsCity':
-        [['name', 'ilike', `% %`]],
+        [['city_id', '=', ``]],
         'conditionsProvince':
-        [['name', 'ilike', `% %`]],
+        [['province_id', '=', ``]],
       }
     };
     this.jobBoardService.post(`offers/filter?limit=${20}&page=${1}&field=start_date&order=DESC`, filter)
