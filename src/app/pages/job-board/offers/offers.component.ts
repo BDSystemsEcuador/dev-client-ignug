@@ -33,7 +33,7 @@ export class OffersComponent implements OnInit {
 
   sortOrder: number;
   criterioBusqueda: string;
-
+  buscar:boolean;
   categories: TreeNode[] = [];
   categorySelected: TreeNode | any;
   constructor(private jobBoardService: JobBoardService, private messageService: MessageService) {
@@ -68,6 +68,8 @@ nodeUnselect(event) {
 
   getOffers(): void {
 
+    this.categorySelected='';
+    this.criterioBusqueda='';
     this.jobBoardService.get('offers/all').subscribe(
       res => {
         this.offers = res['offers'];
@@ -141,7 +143,7 @@ nodeUnselect(event) {
     const filter = { 'filters':
       {
         'conditions':
-        [['position', 'ilike', `%${this.criterioBusqueda}%`]],
+        [['position', 'ilike', `%${this.categorySelected.label}%`]],
         'conditionsCategoryFather':
         selectedChildren,
         'conditionsCategoryChildren':
@@ -160,6 +162,7 @@ nodeUnselect(event) {
         err => console.log(err)
       );
   }
+
 
   validateAppliedOffer() {
     this.jobBoardService.validateAppliedOffer(this.userLogged.id ?? 3, this.selectedOffer.id)

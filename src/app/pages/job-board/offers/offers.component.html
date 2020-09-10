@@ -70,29 +70,29 @@
     <br>
     <div class="p-grid">
         <div class="p-col-5">
-            <p-tree [value]="categories" selectionMode="single" [(selection)]="categorySelected" [styleClass]="'my-tree'"></p-tree>
+            <button pButton type="button" icon="pi pi-users" label="Todas las Ofertas" (click)="getOffers()" ></button>
+            <p-tree [value]="categories" selectionMode="single" [(selection)]="categorySelected" (click)="filterOffers()" [styleClass]="'my-tree'"></p-tree>
         </div>
         <div class="p-col-7">
-            <p-dataView #dv [value]="offers" [paginator]="true" [rows]="3" paginatorPosition="both" filterBy="brand"
+            <p-dataView #dv [value]="offers" [paginator]="true" [rows]="3" paginatorPosition="both" filterBy="position,activities,father_category.name,children_category.name,aditional_information,city.name,province.name"
                 [sortField]="sortField" [sortOrder]="sortOrder">
                 <p-header>
                     <div class="ui-helper-clearfix">
                         <div class="p-grid">
-                            <div class="p-col-12 p-md-12 filter-container">
+                            <div class="p-col-12 filter-container">
                                 <div><span><br>{{categorySelected ? categorySelected.label : 'Todas las Ofertas Disponibles'}}</span></div>
+                            </div>
+                            <div class="p-col-12 filter-container" >
+                                <div style="position:relative;align-content: center;">
+                                    <input type="search" pInputText placeholder="Buscar en Ofertas"
+                                     (input)="dv.filter($event.target.value)"  class="p-col-4" style="text-align: center;">
+                                </div>
+                                
                             </div>
 
                         </div>
                     </div>
-                    <div class="p-col-12 p-md-12">
-                        <div class="ui-inputgroup">
-                            <input type="text" pInputText placeholder="Buscar Ofertas por Nombre del Cargo"
-                            [(ngModel)]="criterioBusqueda" width="100%">
-                        <button pButton type="button" icon="pi pi-search" class="ui-button-warn"
-                            (click)="filterOffers()"></button>
-                        </div>
-                        
-                    </div>
+
                     
                 </p-header>
                 <ng-template let-offer pTemplate="listItem">
