@@ -84,8 +84,8 @@
                             </div>
                             <div class="p-col-12 filter-container" >
                                 <div style="position:relative;align-content: center;">
-                                    <input type="search" pInputText placeholder="Buscar en Ofertas"
-                                     (input)="dv.filter($event.target.value)"  class="p-col-4" style="text-align: center;">
+                                    <input type="search" pInputText placeholder="Buscar (puesto, actividades, ciudad, campo laboral)"
+                                     (input)="dv.filter($event.target.value)"  class="p-col-5" style="text-align: center;">
                                 </div>
                                 
                             </div>
@@ -114,7 +114,7 @@
                 </ng-template>
             </p-dataView>
 
-            <p-dialog header="Información" [(visible)]="displayDialog" [minY]="70" showEffect="fade" [modal]="true"
+            <p-dialog header="Información de la Oferta" [(visible)]="displayDialog" [minY]="70" showEffect="fade" [modal]="true"
                 [style]="{width: '750px'}" (onAfterHide)="onDialogHide()"
                 [contentStyle]="{padding: '2em', textAlign: 'left'}">
                 <div *ngIf="selectedOffer">
